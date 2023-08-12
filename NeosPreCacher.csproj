@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="External\**" />
+    <EmbeddedResource Remove="External\**" />
+    <None Remove="External\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FrooxEngine">
+      <HintPath>..\..\Neos\app\Neos_Data\Managed\FrooxEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="LiteDB">
+      <HintPath>..\..\Neos\app\Neos_Data\Managed\LiteDB.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
