@@ -20,17 +20,14 @@ internal class Program
         Console.WriteLine("NeosPreCacher URL [--force]");
     }
 
-    private static NPCSettings LoadSettings()
+    private static NPCSettings? LoadSettings()
     {
         var file = "settings.json";
         var settings = NPCSettings.Load(file);
 
         if (settings == null)
         {
-            settings = new NPCSettings();
-            settings.NeosDataDir = NPCSettings.GetDefaultNeosDataDir();
-            settings.NeosCacheDir = NPCSettings.GetDefaultNeosCacheDir();
-            settings.Save(file);
+            return null;
         }
 
         if (string.IsNullOrEmpty(settings.NeosCacheDir))
@@ -47,18 +44,23 @@ internal class Program
         return settings;
     }
 
-    private static async Task Main(string[] args)
+    private static async Task<int> Main(string[] args)
     {
         if (args.Length == 0)
         {
             Console.WriteLine("No download URL provided");
             Console.WriteLine();
             PrintUsage();
-            return;
+            return -1;
         }
         bool force = args.Length > 1 && args.Contains("--force");
 
         var npcSettings = LoadSettings();
+        if (npcSettings == null)
+        {
+            Console.WriteLine("settings.json not found");
+            return -1;
+        }
         await AriaHelper.TryDownloadAria(npcSettings.Aria2cDownloadUrl);
 
         var downloadUrl = args[0];
@@ -95,6 +97,7 @@ internal class Program
             else
             {
                 Console.WriteLine("Download failed!");
+                return -1;
             }
         }
         else
@@ -102,5 +105,6 @@ internal class Program
             Console.WriteLine("URL already cached");
         }
 
+        return 0;
     }
 }

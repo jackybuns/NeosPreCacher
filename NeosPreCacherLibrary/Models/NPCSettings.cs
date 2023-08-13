@@ -15,6 +15,14 @@ namespace NeosPreCacherLibrary.Models
         public int NumberOfDownloadConnections { get; set; }
         public string Aria2cDownloadUrl { get; set; }
 
+        public NPCSettings(string neosCacheDir, string neosDataDir, int numberOfDownloadConnections, string aria2cDownloadUrl)
+        {
+            NeosCacheDir = neosCacheDir;
+            NeosDataDir = neosDataDir;
+            NumberOfDownloadConnections = numberOfDownloadConnections;
+            Aria2cDownloadUrl = aria2cDownloadUrl;
+        }
+
         public static string GetDefaultNeosDataDir()
         {
             var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "LocalLow");
