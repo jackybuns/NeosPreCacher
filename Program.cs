@@ -2,8 +2,9 @@
 using FrooxEngine.LogiX.Math.Binary;
 using LiteDB;
 using NeosPreCacher;
-using NeosPreCacher.Model;
+using NeosPreCacher.Aria;
 using NeosPreCacher.NeosHelpers;
+using NeosPreCacher.NeosHelpers.Model;
 using System.ComponentModel;
 using System.Text;
 using System.Text.Json;
@@ -42,15 +43,20 @@ internal class Program
         {
             Console.WriteLine(force ? "Force download..." : "URL not found in cache, downloading...");
             var file = Guid.NewGuid().ToString();
-            var client = new HttpClientDownloadWithProgress(downloadUrl, file);
-            client.ProgressChanged += Client_ProgressChanged;
-            await client.StartDownload();
+            var client = new AriaHelper(downloadUrl, new FileInfo(file));
+            if (client.Download())
+            {
 
-            var targetFile = Path.Combine(neosCacheDir, file);
-            File.Move(file, targetFile);
-            neosdb.AddCacheEntry(downloadUrl, targetFile);
+                var targetFile = Path.Combine(neosCacheDir, file);
+                File.Move(file, targetFile);
+                neosdb.AddCacheEntry(downloadUrl, targetFile);
 
-            Console.WriteLine("Added to Neos cache. Use the same URL in Neos to load the cached version");
+                Console.WriteLine("Added to Neos cache. Use the same URL in Neos to load the cached version");
+            }
+            else
+            {
+                Console.WriteLine("Download failed!");
+            }
         }
         else
         {
