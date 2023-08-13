@@ -1,6 +1,9 @@
-﻿using System;
+﻿using NeosPreCacherLibrary.Models;
+using NeosPreCacherLibrary.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,9 +33,30 @@ namespace NeosPreCacherLibrary.Aria
             };
         }
 
-        public bool CheckAria()
+        public static bool CheckAria()
         {
             return File.Exists("aria2c.exe");
+        }
+
+        public static async Task TryDownloadAria(string downloadUrl)
+        {
+            if (!AriaHelper.CheckAria())
+            {
+                Console.WriteLine("aria2c not found, downloading...");
+                var client = new HttpClientDownloadWithProgress(downloadUrl, "aria.zip");
+                client.ProgressChanged += Utils.Utils.ProgressChanged;
+                await client.StartDownload();
+
+                Console.WriteLine("Unzipping aria2c.exe");
+                using (var zip = ZipFile.OpenRead("aria.zip"))
+                {
+                    zip.Entries.First(x => x.Name == "aria2c.exe").ExtractToFile("aria2c.exe");
+                }
+
+                File.Delete("aria.zip");
+
+                Console.WriteLine("Finished downloading aria2c");
+            }
         }
 
         public bool Download()

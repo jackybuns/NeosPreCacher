@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="aria2c.exe">
+    <None Update="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
