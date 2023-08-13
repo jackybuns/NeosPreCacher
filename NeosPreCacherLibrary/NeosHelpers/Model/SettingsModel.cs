@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NeosPreCacher.NeosHelpers.Model
+namespace NeosPreCacherLibrary.NeosHelpers.Model
 {
     public class SettingsModel
     {

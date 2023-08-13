@@ -1,10 +1,9 @@
 ﻿using FrooxEngine;
 using FrooxEngine.LogiX.Math.Binary;
 using LiteDB;
-using NeosPreCacher;
-using NeosPreCacher.Aria;
-using NeosPreCacher.NeosHelpers;
-using NeosPreCacher.NeosHelpers.Model;
+using NeosPreCacherLibrary.Aria;
+using NeosPreCacherLibrary.NeosHelpers;
+using NeosPreCacherLibrary.NeosHelpers.Model;
 using System.ComponentModel;
 using System.Text;
 using System.Text.Json;
@@ -46,7 +45,6 @@ internal class Program
             var client = new AriaHelper(downloadUrl, new FileInfo(file));
             if (client.Download())
             {
-
                 var targetFile = Path.Combine(neosCacheDir, file);
                 File.Move(file, targetFile);
                 neosdb.AddCacheEntry(downloadUrl, targetFile);

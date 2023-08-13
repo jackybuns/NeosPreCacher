@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NeosPreCacher.Aria
+namespace NeosPreCacherLibrary.Aria
 {
     public class AriaHelper
     {

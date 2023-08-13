@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NeosPreCacher.NeosHelpers
+namespace NeosPreCacherLibrary.NeosHelpers
 {
     public class NeosDBHelper
     {

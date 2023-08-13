@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace NeosPreCacher.NeosHelpers
+namespace NeosPreCacherLibrary.NeosHelpers
 {
     public class DbHelper
     {
