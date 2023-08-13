@@ -2,6 +2,8 @@
 
 Is a tool used to download bigger files and put them into the NeosVR cache while Neos is not running to save on resources. Useful for downloading movies for example.
 
+**>>> I don't take any responsibility if your Neos database gets corrupted or destroyed using this tool. Use at your own risk. <<<**
+
 # Usage
 
 It currently is only a command line application. So you need to open a terminal to execute it.
