@@ -5,7 +5,11 @@ VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeosPreCacher", "NeosPreCacher\NeosPreCacher.csproj", "{512DBD2A-9836-4EC5-8C1D-EBFC0AFABCF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeosPreCacherLibrary", "NeosPreCacherLibrary\NeosPreCacherLibrary.csproj", "{C0292319-DF6F-4966-A482-02545FBB2123}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeosPreCacherLibrary", "NeosPreCacherLibrary\NeosPreCacherLibrary.csproj", "{C0292319-DF6F-4966-A482-02545FBB2123}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeosPreCacherUI", "NeosPreCacherUI\NeosPreCacherUI.csproj", "{9E374B29-FC2F-4887-A3C4-1F7A101ADCF6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeosPreCacherUI.Desktop", "NeosPreCacherUI.Desktop\NeosPreCacherUI.Desktop.csproj", "{B4471AEC-AFAC-4E1F-8D2A-5FD05FC103B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +30,18 @@ Global
 		{C0292319-DF6F-4966-A482-02545FBB2123}.Publish|Any CPU.Build.0 = Publish|Any CPU
 		{C0292319-DF6F-4966-A482-02545FBB2123}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0292319-DF6F-4966-A482-02545FBB2123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E374B29-FC2F-4887-A3C4-1F7A101ADCF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E374B29-FC2F-4887-A3C4-1F7A101ADCF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E374B29-FC2F-4887-A3C4-1F7A101ADCF6}.Publish|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E374B29-FC2F-4887-A3C4-1F7A101ADCF6}.Publish|Any CPU.Build.0 = Debug|Any CPU
+		{9E374B29-FC2F-4887-A3C4-1F7A101ADCF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E374B29-FC2F-4887-A3C4-1F7A101ADCF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4471AEC-AFAC-4E1F-8D2A-5FD05FC103B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4471AEC-AFAC-4E1F-8D2A-5FD05FC103B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4471AEC-AFAC-4E1F-8D2A-5FD05FC103B4}.Publish|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4471AEC-AFAC-4E1F-8D2A-5FD05FC103B4}.Publish|Any CPU.Build.0 = Debug|Any CPU
+		{B4471AEC-AFAC-4E1F-8D2A-5FD05FC103B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4471AEC-AFAC-4E1F-8D2A-5FD05FC103B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

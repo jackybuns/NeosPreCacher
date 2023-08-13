@@ -81,7 +81,8 @@ internal class Program
             Console.WriteLine(force ? "Force download..." : "URL not found in cache, downloading...");
             var file = Guid.NewGuid().ToString();
             var client = new AriaHelper(downloadUrl, new FileInfo(file), npcSettings.NumberOfDownloadConnections);
-            if (client.Download())
+            client.OnPrintLine += Client_OnPrintLine;
+            if (await client.Download())
             {
                 var targetFile = Path.Combine(neosCacheDir, file);
                 File.Move(file, targetFile);
@@ -106,5 +107,10 @@ internal class Program
         }
 
         return 0;
+    }
+
+    private static void Client_OnPrintLine(string line)
+    {
+        Console.WriteLine(line);
     }
 }

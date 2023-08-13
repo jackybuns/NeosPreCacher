@@ -1,4 +1,5 @@
-﻿using NeosPreCacherLibrary.Models;
+﻿using FrooxEngine.UIX;
+using NeosPreCacherLibrary.Models;
 using NeosPreCacherLibrary.Utils;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,11 @@ namespace NeosPreCacherLibrary.Aria
         private string url;
         private FileInfo targetFile;
         private ProcessStartInfo processStartInfo;
+
+        public delegate void PrintLineHandler(string line);
+        public event PrintLineHandler OnPrintLine;
+
+        public Process Process { get; private set; }
 
         public AriaHelper(string url, FileInfo targetfile, int numberOfConnections = 4)
         {
@@ -59,22 +65,17 @@ namespace NeosPreCacherLibrary.Aria
             }
         }
 
-        public bool Download()
+        public async Task<bool> Download()
         {
             try
             {
-                var process = new Process();
-                process.StartInfo = processStartInfo;
-                process.Start();
-
-                while (!process.StandardOutput.EndOfStream)
-                {
-                    var line = process.StandardOutput.ReadLine();
-                    Console.WriteLine(line);
-                }
-
-                process.WaitForExit();
-                return process.ExitCode == 0;
+                Process = new Process();
+                Process.StartInfo = processStartInfo;
+                Process.OutputDataReceived += Process_OutputDataReceived;
+                Process.Start();
+                Process.BeginOutputReadLine();
+                await Process.WaitForExitAsync();
+                return Process.ExitCode == 0;
             }
             catch (Exception ex)
             {
@@ -83,5 +84,10 @@ namespace NeosPreCacherLibrary.Aria
             }
         }
 
+        private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (e.Data != null)
+                OnPrintLine?.Invoke(e.Data);
+        }
     }
 }
