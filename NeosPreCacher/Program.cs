@@ -1,16 +1,7 @@
-﻿using FrooxEngine;
-using FrooxEngine.LogiX.Math.Binary;
-using LiteDB;
-using NeosPreCacherLibrary.Aria;
+﻿using NeosPreCacherLibrary.Aria;
 using NeosPreCacherLibrary.Models;
 using NeosPreCacherLibrary.NeosHelpers;
 using NeosPreCacherLibrary.NeosHelpers.Model;
-using NeosPreCacherLibrary.Utils;
-using System.ComponentModel;
-using System.IO.Compression;
-using System.Text;
-using System.Text.Json;
-using static NeosAssets;
 
 internal class Program
 {
@@ -61,7 +52,6 @@ internal class Program
             Console.WriteLine("settings.json not found");
             return -1;
         }
-        await AriaHelper.TryDownloadAria(npcSettings.Aria2cDownloadUrl);
 
         var downloadUrl = args[0];
         var neosDataDir = npcSettings.NeosDataDir;
@@ -82,6 +72,13 @@ internal class Program
             var file = Guid.NewGuid().ToString();
             var client = new AriaHelper(downloadUrl, new FileInfo(file), npcSettings.NumberOfDownloadConnections);
             client.OnPrintLine += Client_OnPrintLine;
+
+            if (!await client.TryDownloadAria(npcSettings.Aria2cDownloadUrl))
+            {
+                Console.WriteLine("Could not download aria, aborting...");
+                return -1;
+            }
+
             if (await client.Download())
             {
                 var targetFile = Path.Combine(neosCacheDir, file);

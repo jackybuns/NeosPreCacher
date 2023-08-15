@@ -1,18 +1,13 @@
-﻿using FrooxEngine.UIX;
-using NeosPreCacherLibrary.Models;
-using NeosPreCacherLibrary.Utils;
-using System;
-using System.Collections.Generic;
+﻿using NeosPreCacherLibrary.Utils;
 using System.Diagnostics;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NeosPreCacherLibrary.Aria
 {
     public class AriaHelper
     {
+        public delegate void PrintLineDelegate(string text);
+
         private string url;
         private FileInfo targetFile;
         private ProcessStartInfo processStartInfo;
@@ -24,9 +19,6 @@ namespace NeosPreCacherLibrary.Aria
 
         public AriaHelper(string url, FileInfo targetfile, int numberOfConnections = 4)
         {
-            if (!CheckAria())
-                throw new Exception("aria2c.exe could not be found");
-
             this.url = url;
             this.targetFile = targetfile;
             processStartInfo = new ProcessStartInfo()
@@ -44,24 +36,43 @@ namespace NeosPreCacherLibrary.Aria
             return File.Exists("aria2c.exe");
         }
 
-        public static async Task TryDownloadAria(string downloadUrl)
+        public async Task<bool> TryDownloadAria(string downloadUrl)
         {
             if (!AriaHelper.CheckAria())
             {
-                Console.WriteLine("aria2c not found, downloading...");
-                var client = new HttpClientDownloadWithProgress(downloadUrl, "aria.zip");
-                client.ProgressChanged += Utils.Utils.ProgressChanged;
-                await client.StartDownload();
-
-                Console.WriteLine("Unzipping aria2c.exe");
-                using (var zip = ZipFile.OpenRead("aria.zip"))
+                try
                 {
-                    zip.Entries.First(x => x.Name == "aria2c.exe").ExtractToFile("aria2c.exe");
+                    OnPrintLine?.Invoke("aria2c not found, downloading...");
+                    var client = new HttpClientDownloadWithProgress(downloadUrl, "aria.zip");
+                    client.ProgressChanged += Client_ProgressChanged;
+                    await client.StartDownload();
+
+                    OnPrintLine?.Invoke("Unzipping aria2c.exe");
+                    using (var zip = ZipFile.OpenRead("aria.zip"))
+                    {
+                        zip.Entries.First(x => x.Name == "aria2c.exe").ExtractToFile("aria2c.exe");
+                    }
+
+                    File.Delete("aria.zip");
+                    OnPrintLine?.Invoke("Finished downloading aria2c");
+                    return true;
                 }
+                catch (Exception ex)
+                {
+                    OnPrintLine?.Invoke("Error while downloading aria");
+                    OnPrintLine?.Invoke(ex.Message);
+                    return false;
+                }
+            }
+            return true;
+        }
 
-                File.Delete("aria.zip");
-
-                Console.WriteLine("Finished downloading aria2c");
+        private void Client_ProgressChanged(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage)
+        {
+            if (progressPercentage.HasValue)
+            {
+                var p = Utils.Utils.GenerateProgressBar(progressPercentage.Value / 100.0);
+                OnPrintLine?.Invoke($"{p} {totalBytesDownloaded}/{totalFileSize} - {progressPercentage}%");
             }
         }
 
@@ -79,7 +90,7 @@ namespace NeosPreCacherLibrary.Aria
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                OnPrintLine?.Invoke(ex.Message);
                 return false;
             }
         }

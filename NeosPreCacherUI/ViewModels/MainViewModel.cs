@@ -6,7 +6,6 @@ using ReactiveUI;
 using System;
 using System.IO;
 using System.Reactive;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace NeosPreCacherUI.ViewModels;
@@ -98,7 +97,9 @@ public class MainViewModel : ViewModelBase
         this.npcSettings = LoadSettings();
         DownloadCommand = ReactiveCommand.CreateFromTask(OnDownloadCommand);
         Output = "";
+
         PrintLine("Waiting for Download");
+        PrintLine();
     }
 
     private async Task OnDownloadCommand()
@@ -108,16 +109,9 @@ public class MainViewModel : ViewModelBase
             PrintLine("No URL provided!");
             return;
         }
-        if (!AriaHelper.CheckAria())
-        {
-            PrintLine("aria2 not found, downloading...");
-            await AriaHelper.TryDownloadAria(npcSettings.Aria2cDownloadUrl);
-        }
 
         var neosDataDir = npcSettings.NeosDataDir;
         var neosCacheDir = npcSettings.NeosCacheDir;
-        //var neosDataDir = "C:\\NeosCache\\Data";
-        //var neosCacheDir = "C:\\NeosCache\\Cache\\Cache";
 
         var dbPath = Path.Combine(neosDataDir, "Neos.litedb");
         if (!File.Exists(dbPath))
@@ -138,14 +132,32 @@ public class MainViewModel : ViewModelBase
         }
 
         var settings = System.Text.Json.JsonSerializer.Deserialize<SettingsModel>(File.ReadAllText(settingsPath));
+        if (settings == null)
+        {
+            PrintLine("Could not load the NeosVR settings file");
+            return;
+        }
         var neosdb = new NeosDBHelper(dbPath, settings.MachineID);
 
         if (!neosdb.ContainsCacheEntry(downloadUrl) || ForceDownload)
         {
-            PrintLine(ForceDownload ? "Force download..." : "URL not found in cache, downloading...");
+            PrintLine(ForceDownload ? "Forcing download..." : "URL not found in cache, downloading...");
             var file = Guid.NewGuid().ToString();
             var client = new AriaHelper(downloadUrl, new FileInfo(file), npcSettings.NumberOfDownloadConnections);
             client.OnPrintLine += PrintLine;
+
+            // download aria
+            if (!AriaHelper.CheckAria())
+            {
+                PrintLine("aria2 not found, downloading...");
+                if (!await client.TryDownloadAria(npcSettings.Aria2cDownloadUrl))
+                {
+                    PrintLine("abort");
+                    return;
+                }
+                PrintLine();
+            }
+
             var targetFile = Path.Combine(neosCacheDir, file);
             try
             {
@@ -173,7 +185,8 @@ public class MainViewModel : ViewModelBase
         }
         else
         {
-            PrintLine("URL already cached");
+            PrintLine("URL already cached.");
+            PrintLine("Use 'Force Download' to download again and replace the cache entry.");
         }
     }
 
