@@ -10,10 +10,10 @@
 
   <ItemGroup>
     <Reference Include="FrooxEngine">
-      <HintPath>..\..\..\Neos\app\Neos_Data\Managed\FrooxEngine.dll</HintPath>
+      <HintPath>$(NEOS_DIR)\Neos_Data\Managed\FrooxEngine.dll</HintPath>
     </Reference>
     <Reference Include="LiteDB">
-      <HintPath>..\..\..\Neos\app\Neos_Data\Managed\LiteDB.dll</HintPath>
+      <HintPath>$(NEOS_DIR)\Neos_Data\Managed\LiteDB.dll</HintPath>
     </Reference>
   </ItemGroup>
 

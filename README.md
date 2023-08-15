@@ -2,7 +2,7 @@
 
 Is a tool used to download bigger files and put them into the NeosVR cache while Neos is not running to save on resources. Useful for downloading movies for example.
 
-**>>> I don't take any responsibility if your Neos database gets corrupted or destroyed using this tool. Use at your own risk. <<<**
+<span style="color:red">**>>> I don't take any responsibility if your Neos database gets corrupted or destroyed using this tool. Use at your own risk. <<<**</span>
 
 # Usage
 
@@ -15,3 +15,7 @@ Usage is:
 `NeosPreCacher.exe URL [--force]`
 
 With `--force` the URL will be downloaded again an the entry in the Cache will be replace with the new one (useful if the file is corrupted).
+
+# Building
+
+You need to have NeosVR installed and set the environment variable `NEOS_DIR` to the Neos install root directory. For example if you have the standalone build, set it to `C:\Neos\app`.
