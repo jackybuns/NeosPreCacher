@@ -24,7 +24,7 @@ namespace NeosPreCacherLibrary.Aria
             processStartInfo = new ProcessStartInfo()
             {
                 FileName = "aria2c.exe",
-                Arguments = $"-x{numberOfConnections} {url} -d {targetfile.Directory.FullName} -o {targetFile.Name}",
+                Arguments = $"--file-allocation=none -x{numberOfConnections} {url} -d {targetfile.Directory.FullName} -o {targetFile.Name}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 CreateNoWindow = true,

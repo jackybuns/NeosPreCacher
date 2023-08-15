@@ -6,11 +6,11 @@
              mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="450"
              x:Class="NeosPreCacherUI.Views.MainView"
              x:DataType="vm:MainViewModel">
-  <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:MainViewModel />
-  </Design.DataContext>
+		<vm:MainViewModel />
+	</Design.DataContext>
 
 	<Grid>
 		<Grid.ColumnDefinitions>
@@ -19,23 +19,23 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />	
-			<RowDefinition Height="Auto" />	
-			<RowDefinition Height="Auto" />	
-			<RowDefinition Height="Auto" />	
-			<RowDefinition Height="Auto" />	
-			<RowDefinition Height="Auto" />	
-			<RowDefinition Height="*" />	
-			<RowDefinition Height="Auto" />	
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
 		<TextBlock Grid.Row="0" Grid.Column="0" Margin="3" Text="Cache Directory:" VerticalAlignment="Center"/>
-		<TextBox Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding DataPath}" />
-		<Button Grid.Row="0" Grid.Column="2" Margin="3" Content="..." />
+		<TextBox Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding CachePath}" />
+		<Button Grid.Row="0" Grid.Column="2" Margin="3" Content="..." Command="{Binding SelectCacheDirCommand}"/>
 
 		<TextBlock Grid.Row="1" Grid.Column="0" Margin="3" Text="Data Directory:" VerticalAlignment="Center"/>
-		<TextBox Grid.Row="1" Grid.Column="1" Margin="3" Text="{Binding CachePath}"/>
-		<Button Grid.Row="1" Grid.Column="2" Margin="3" Content="..." />
+		<TextBox Grid.Row="1" Grid.Column="1" Margin="3" Text="{Binding DataPath}"/>
+		<Button Grid.Row="1" Grid.Column="2" Margin="3" Content="..." Command="{Binding SelectDataDirCommand}"/>
 
 		<TextBlock Grid.Row="2" Grid.Column="0" Margin="3" Text="Number of Connections:" VerticalAlignment="Center"/>
 		<TextBox Grid.Row="2" Grid.Column="1" Margin="3" Text="{Binding NumConnections}"/>
@@ -48,11 +48,14 @@
 
 		<TextBlock Grid.Row="5" Grid.Column="0" Text="Output:" Margin="3"/>
 
-		<TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="3" Text="{Binding Output}"  IsEnabled="True" IsReadOnly="True"
+		<TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="3" 
+				 Text="{Binding Output}"  IsEnabled="True" IsReadOnly="True"
 				 ScrollViewer.HorizontalScrollBarVisibility="Visible"
 				 ScrollViewer.VerticalScrollBarVisibility="Visible"
 				 ScrollViewer.AllowAutoHide="False"
-				 CaretIndex="{Binding CaretIndex}"/>
+				 CaretIndex="{Binding CaretIndex}" 
+				 FontFamily="Noto Mono"
+				 />
 
 
 		<Button Grid.Row="7" HorizontalAlignment="Right" Grid.Column="0" Grid.ColumnSpan="3" Margin="3" Content="Download" Command="{Binding DownloadCommand}" />

@@ -1,10 +1,13 @@
-﻿using NeosPreCacherLibrary.Aria;
+﻿using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using NeosPreCacherLibrary.Aria;
 using NeosPreCacherLibrary.Models;
 using NeosPreCacherLibrary.NeosHelpers;
 using NeosPreCacherLibrary.NeosHelpers.Model;
 using ReactiveUI;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
 
@@ -91,15 +94,66 @@ public class MainViewModel : ViewModelBase
 
     public ReactiveCommand<Unit, Unit> DownloadCommand { get; }
 
+    public ReactiveCommand<Unit, Unit> SelectCacheDirCommand { get; }
+    public ReactiveCommand<Unit, Unit> SelectDataDirCommand { get; }
+
+    public TopLevel TopLevel { get; set; }
 
     public MainViewModel()
     {
         this.npcSettings = LoadSettings();
         DownloadCommand = ReactiveCommand.CreateFromTask(OnDownloadCommand);
+        SelectCacheDirCommand = ReactiveCommand.CreateFromTask(OnSelectCacheDir);
+        SelectDataDirCommand = ReactiveCommand.CreateFromTask(OnSelectDataDir);
         Output = "";
+
 
         PrintLine("Waiting for Download");
         PrintLine();
+
+    }
+
+    private async Task OnSelectCacheDir()
+    {
+        if (TopLevel != null)
+        {
+            UriBuilder builder = new UriBuilder();
+            builder.Scheme = Uri.UriSchemeFile;
+            builder.Path = CachePath;
+            builder.Host = "";
+
+            var folders = await TopLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            {
+                AllowMultiple = false,
+                Title = "Pick NeosVR Cache Directory",
+                SuggestedStartLocation = await TopLevel.StorageProvider.TryGetFolderFromPathAsync(builder.Uri)
+            });
+            if (folders.Any())
+            {
+                CachePath = folders.First().Path.AbsolutePath;
+            }
+        }
+    }
+    private async Task OnSelectDataDir()
+    {
+        if (TopLevel != null)
+        {
+            UriBuilder builder = new UriBuilder();
+            builder.Scheme = Uri.UriSchemeFile;
+            builder.Path = DataPath;
+            builder.Host = "";
+
+            var folders = await TopLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            {
+                AllowMultiple = false,
+                Title = "Pick NeosVR Data Directory",
+                SuggestedStartLocation = await TopLevel.StorageProvider.TryGetFolderFromPathAsync(builder.Uri)
+            });
+            if (folders.Any())
+            {
+                DataPath = folders.First().Path.AbsolutePath;
+            }
+        }
     }
 
     private async Task OnDownloadCommand()
