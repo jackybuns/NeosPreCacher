@@ -1,5 +1,7 @@
 # NeosPreCacher
 
+[>>> DOWNLOAD <<<](https://github.com/jackybuns/NeosPreCacher/releases/latest)
+
 Is a tool used to download bigger files and put them into the NeosVR cache while Neos is not running to save on resources. Useful for downloading movies for example.
 
 <span style="color:red">**>>> I don't take any responsibility if your Neos database gets corrupted or destroyed using this tool. Use at your own risk. <<<**</span>
